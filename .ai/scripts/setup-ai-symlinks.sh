@@ -1,8 +1,15 @@
 #!/usr/bin/env bash
 # Setup or repair AI agent symlinks for this repo.
-# Run this any time after `git worktree add`, a branch switch, or a pull —
-# it regenerates the gitignored vendor files (CLAUDE.md, .claude/, etc.)
-# from the committed source of truth in .ai/.
+#
+# These symlinks (CLAUDE.md, .claude/settings.json, etc.) are COMMITTED to git,
+# not gitignored — this repo has no package manager / postinstall step to
+# regenerate them automatically, so the committed symlinks themselves are what
+# guarantees Superpowers + repo hooks activate for every collaborator on every
+# machine straight from `git clone`, with no setup step required.
+#
+# Re-running this script is still useful after adding a new agent/tool-config,
+# or to repair a symlink that got clobbered by an editor/tool that doesn't
+# preserve symlinks (e.g. some GUI git clients, or a raw zip re-upload).
 
 set -e
 
@@ -41,6 +48,7 @@ setup_symlink ".cursorrules" ".ai/tool-configs/cursor-rules.md" "Cursor rules"
 setup_symlink ".augment/rules/project-context.md" "../../.ai/tool-configs/augment-rules.md" "Augment rules"
 setup_symlink ".claude/skills" "../.ai/skills" "Claude Code skills"
 setup_symlink ".claude/agents" "../.ai/agents" "Claude Code agents"
+setup_symlink ".claude/settings.json" "../.ai/tool-configs/claude/settings.template.json" "Claude settings (enables Superpowers + repo hooks)"
 
 # Replace Augment agent files with symlinks to shared source
 echo ""
@@ -55,21 +63,7 @@ if [ -d ".ai/agents" ]; then
     done
 fi
 
-# --- Claude settings + plugin pin (generated, not symlinked) ---
-echo ""
-echo "Setting up Claude settings + plugin pin..."
-
-CLAUDE_SETTINGS_TEMPLATE=".ai/tool-configs/claude/settings.template.json"
-CLAUDE_SETTINGS_OUT=".claude/settings.json"
 SUPERPOWERS_MANIFEST=".ai/tool-configs/claude/superpowers.manifest.json"
-
-if [ -f "$CLAUDE_SETTINGS_TEMPLATE" ]; then
-    mkdir -p .claude
-    cp "$CLAUDE_SETTINGS_TEMPLATE" "$CLAUDE_SETTINGS_OUT"
-    echo -e "${GREEN}✓${NC} Generated $CLAUDE_SETTINGS_OUT from template"
-else
-    echo -e "${YELLOW}⚠${NC}  Missing $CLAUDE_SETTINGS_TEMPLATE; skipped settings generation"
-fi
 
 # Ensure vendored hook scripts and tools are executable
 if [ -d ".ai/hooks" ]; then
@@ -147,5 +141,8 @@ echo "  .augment/rules/project-context.md → ../.ai/tool-configs/augment-rules.
 echo "  .claude/skills → .ai/skills"
 echo "  .claude/agents → .ai/agents"
 echo "  .augment/agents/*.md → .ai/agents/*.md"
-echo "  .claude/settings.json ← .ai/tool-configs/claude/settings.template.json (generated)"
+echo "  .claude/settings.json → .ai/tool-configs/claude/settings.template.json"
 echo "  .ai/hooks/*.sh (executable; wired via settings, enforce-worktree global)"
+echo ""
+echo "All of the above are COMMITTED symlinks — a plain git clone is enough."
+echo "Only .claude/settings.local.json (personal permission allow-list) stays local."

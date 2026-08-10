@@ -88,20 +88,15 @@ done
 echo ""
 echo "Checking Claude settings + hooks..."
 
-CLAUDE_SETTINGS_TEMPLATE=".ai/tool-configs/claude/settings.template.json"
-CLAUDE_SETTINGS_OUT=".claude/settings.json"
+check_symlink ".claude/settings.json" "../.ai/tool-configs/claude/settings.template.json" "Claude settings (Superpowers + repo hooks)"
 
-if [ ! -f "$CLAUDE_SETTINGS_TEMPLATE" ]; then
-    echo -e "${RED}✗${NC} Missing $CLAUDE_SETTINGS_TEMPLATE"
-    ERRORS=$((ERRORS + 1))
-elif [ ! -f "$CLAUDE_SETTINGS_OUT" ]; then
-    echo -e "${RED}✗${NC} Missing $CLAUDE_SETTINGS_OUT (run .ai/scripts/setup-ai-symlinks.sh)"
-    ERRORS=$((ERRORS + 1))
-elif ! diff -q "$CLAUDE_SETTINGS_TEMPLATE" "$CLAUDE_SETTINGS_OUT" >/dev/null; then
-    echo -e "${RED}✗${NC} $CLAUDE_SETTINGS_OUT has drifted from the template (run setup to regenerate)"
-    ERRORS=$((ERRORS + 1))
-else
-    echo -e "${GREEN}✓${NC} $CLAUDE_SETTINGS_OUT in sync with template"
+if [ -f ".claude/settings.json" ] && command -v jq >/dev/null 2>&1; then
+    if [ "$(jq -r '.enabledPlugins."superpowers@claude-plugins-official"' .claude/settings.json 2>/dev/null)" = "true" ]; then
+        echo -e "${GREEN}✓${NC} Superpowers is enabled in .claude/settings.json"
+    else
+        echo -e "${RED}✗${NC} Superpowers is NOT enabled in .claude/settings.json"
+        ERRORS=$((ERRORS + 1))
+    fi
 fi
 
 for h in session-start-spec spec-changelog-reminder readme-freshness-reminder lint-changed-files enforce-worktree; do
