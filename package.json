@@ -5,7 +5,7 @@
   "main": "index.html",
   "private": true,
   "scripts": {
-    "dev": "npx serve -s .",
+    "dev": "npx serve -s . -p 8989",
     "start": "python3 -m http.server 8989",
     "build": "echo 'Nothing to build; this is a static site.'"
   },
