@@ -258,11 +258,17 @@ h1{
 /* actions */
 .actions{ padding:40px clamp(24px,5vw,48px) 8px; display:grid; gap:14px; }
 .btn{
-  display:block; text-align:center; text-decoration:none; border-radius:2px;
+  display:block; width:100%; text-align:center; text-decoration:none; border-radius:2px;
   padding:16px 18px; font-size:11.5px; letter-spacing:.3em; text-transform:uppercase;
   transition:all .25s ease; border:1px solid rgba(211,174,107,.55); color:var(--gold);
+  font-family:inherit; background:none; cursor:pointer;
 }
 .btn:hover{ background:rgba(211,174,107,.12); box-shadow:0 0 24px rgba(211,174,107,.25); }
+.btn:focus-visible{ outline:2px solid var(--gold); outline-offset:2px; }
+/* size-adjusted variant used inside the booking popover */
+.btn.btn-sm{
+  padding:11px 12px; font-size:9.5px; letter-spacing:.22em; line-height:1.5;
+}
 .btn.primary{
   background:linear-gradient(170deg, var(--gold), var(--gold-soft));
   color:#0d2430; border-color:transparent; font-weight:600;
@@ -315,8 +321,9 @@ h1{
   font-family:'Cormorant Garamond',serif; font-style:italic;
   font-size:15px; line-height:1.5; color:#e6dcc6;
 }
-@media (hover:hover){
-  .btn-row:hover .info-pop{ opacity:1; transform:none; pointer-events:auto; }
+.info-pop .btn-sm{ margin-top:12px; }
+.btn-row .btn[aria-expanded="true"]{
+  background:rgba(211,174,107,.12); box-shadow:0 0 24px rgba(211,174,107,.25);
 }
 
 /* seascape footer band */
@@ -432,11 +439,12 @@ footer{ text-align:center; padding:26px 20px 0; font-size:9.5px; letter-spacing:
     <div class="actions">
       <a class="btn primary" href="map/" >⚓ &nbsp;Explore the Voyage — Interactive Map</a>
       <div class="btn-row">
-        <a class="btn" href="https://www.royalcaribbean.com/aus/en/cruises?search=departurePort:SYD&amp;itineraryPanel=AN08SYD-395821314&amp;country=AUS&amp;icid=hp_tile2_intl&amp;market=aus&amp;language=en" target="_blank" rel="noopener">Cruise Selection &amp; Booking — Royal Caribbean</a>
+        <button class="btn" id="bookingOpenBtn" type="button" aria-expanded="false" aria-controls="bookingHelp">Cruise Selection &amp; Booking — Royal Caribbean</button>
         <button class="info-btn" id="bookingInfoBtn" aria-expanded="false" aria-controls="bookingHelp" aria-label="How to find our sailing date" type="button">i</button>
-        <div class="info-pop" id="bookingHelp" role="tooltip">
+        <div class="info-pop" id="bookingHelp" aria-label="How to find our sailing date">
           <img src="assets/booking-help.jpg" alt="Royal Caribbean booking page with the Dec 11 to Dec 19 date circled and marked: press there, love V" loading="lazy">
           <p>When the page opens, look under "Available dates" and choose<br/><b style="font-style:normal;color:var(--gold)">Dec 11 – Dec 19, 2026</b> — that one's ours. ♥</p>
+          <a class="btn btn-sm" id="bookingGoLink" href="https://www.royalcaribbean.com/aus/en/cruises?search=departurePort:SYD&amp;itineraryPanel=AN08SYD-395821314&amp;country=AUS&amp;icid=hp_tile2_intl&amp;market=aus&amp;language=en" target="_blank" rel="noopener">Cruise Selection &amp; Booking — Royal Caribbean</a>
         </div>
       </div>
       <a class="btn" href="https://www.royalcaribbean.com/aus/en/itinerary/8-night-south-pacific-cruise-from-sydney-on-anthem-AN08K121?sailDate=2026-12-11&amp;packageCode=AN08K121&amp;groupId=AN08SYD-395821314&amp;country=AUS" target="_blank" rel="noopener">About This Cruise · Current Discount Promotions</a>
@@ -508,19 +516,26 @@ footer{ text-align:center; padding:26px 20px 0; font-size:9.5px; letter-spacing:
   env.addEventListener('click', openInvite);
 
   // Booking help popover
-  var infoBtn = document.getElementById('bookingInfoBtn');
   var infoPop = document.getElementById('bookingHelp');
+  var popTriggers = [
+    document.getElementById('bookingOpenBtn'),
+    document.getElementById('bookingInfoBtn')
+  ];
   function setPop(on){
     infoPop.classList.toggle('show', on);
-    infoBtn.setAttribute('aria-expanded', on ? 'true' : 'false');
+    popTriggers.forEach(function(t){ t.setAttribute('aria-expanded', on ? 'true' : 'false'); });
   }
-  infoBtn.addEventListener('click', function(e){
-    e.stopPropagation();
-    setPop(!infoPop.classList.contains('show'));
+  popTriggers.forEach(function(t){
+    t.addEventListener('click', function(e){
+      e.stopPropagation();
+      setPop(!infoPop.classList.contains('show'));
+    });
   });
   document.addEventListener('click', function(e){
-    if (!infoPop.contains(e.target) && e.target !== infoBtn) setPop(false);
+    if (!infoPop.contains(e.target) && popTriggers.indexOf(e.target) === -1) setPop(false);
   });
+  // once they've gone through to the booking page, tidy the popover away
+  document.getElementById('bookingGoLink').addEventListener('click', function(){ setPop(false); });
   document.addEventListener('keydown', function(e){
     if (e.key === 'Escape') setPop(false);
   });
