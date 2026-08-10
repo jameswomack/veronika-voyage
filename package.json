@@ -1,0 +1,27 @@
+{
+  "name": "@jameswomack/veronika-voyage",
+  "version": "1.0.0-alpha.1",
+  "description": "A simple, static website for Veronika's 60th birthday cruise.",
+  "main": "index.html",
+  "private": true,
+  "scripts": {
+    "dev": "npx serve -s .",
+    "start": "python3 -m http.server 8989",
+    "build": "echo 'Nothing to build; this is a static site.'"
+  },
+  "author": "James Womack <james@womack.io>",
+  "license": "MIT",
+  "devDependencies": {
+    "serve": "^14.2.0"
+  },
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jameswomack/veronika-voyage.git"
+  },
+  "engines": {
+    "node": "24.7.0",
+    "npm": "11.5.1",
+    "pnpm": "11.2.2"
+  }
+}
