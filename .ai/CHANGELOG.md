@@ -9,6 +9,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Changed — adopted npm for dev tooling (2026-08-10)
+
+`package.json` (added separately, tracking `serve` for local preview) is now used more
+fully: `markdownlint-cli2` is a devDependency instead of an optional global tool, and
+`.ai/hooks/lint-changed-files.sh` prefers the pinned `node_modules/.bin` copy over a
+global install. Added `npm run setup:ai` / `validate:ai` / `lint:md` scripts and a
+`postinstall` hook that re-runs `.ai/scripts/setup-ai-symlinks.sh` as a self-heal — on
+top of, not instead of, the committed symlinks from the previous fix (npm install is
+still not guaranteed to run before someone opens Claude Code here, so the symlinks stay
+committed either way). `.ai/scripts/setup-worktree.sh` now also runs `npm install`.
+Root `.markdownlint.jsonc` gained `MD060: disabled` (dropped by mistake when this file
+was first written — restores the setting mlb-projections uses) and `.ai/agents/` got a
+scoped override disabling `MD041` (agent persona files intentionally don't open with an
+H1). This repo is still not gaining a build step — `npm run build` remains a no-op; npm
+here is exclusively for tiny dev-time tooling. See `.ai/shared/repo-context.md` for the
+full npm-scripts table.
+
 ### Fixed — Superpowers wasn't actually guaranteed on a fresh clone (2026-08-09)
 
 The initial `.ai/` setup gitignored `CLAUDE.md`, `.claude/settings.json`, and the other

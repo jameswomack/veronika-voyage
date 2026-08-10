@@ -1,13 +1,14 @@
 # Cursor Rules — Veronika Voyage
 
 You are working on a small, static HTML/CSS/JS site (an e-vite + trip map for
-one event), deployed via GitHub Pages with no build step and no
-`package.json`. Full context: `.ai/shared/repo-context.md`.
+one event), deployed via GitHub Pages with no build step. `npm` exists only
+for tiny dev-time tooling (`serve`, `markdownlint-cli2`) — not for building
+or transforming the site. Full context: `.ai/shared/repo-context.md`.
 
 ## Project Context
 
 **Type:** Static site, hand-authored HTML
-**Stack:** HTML/CSS/JS only — no framework, no bundler
+**Stack:** HTML/CSS/JS only — no framework, no bundler, npm for dev tooling only
 **Deployment:** GitHub Pages, `main` branch / root
 
 ## Mandatory: Spec-Driven Development
@@ -26,11 +27,12 @@ next agent starts from a lie.
 
 ## Core Principles
 
-1. **No build system.** Never add a bundler, framework, or npm dependency
-   without being explicitly asked — this repo is intentionally zero-tooling.
+1. **No build system.** Never add a bundler or framework without being
+   explicitly asked. A devDependency for a specific dev-tooling need (another
+   linter, a screenshot tool) is fine — a build step for the site is not.
 2. **`email.html` stays a paste-ready fragment.** Inline styles only, no
    `<style>`/`<script>` blocks, links out to the live GitHub Pages URL.
 3. **Worktree discipline.** All edits happen in a sibling worktree on its
    own branch (`.ai/workflows/worktree.md`); never edit `main` directly.
-4. **Visual verification.** Serve locally (`python3 -m http.server`) and
+4. **Visual verification.** Serve locally (`npm run dev` or `npm start`) and
    check real-browser rendering before calling a visual change done.

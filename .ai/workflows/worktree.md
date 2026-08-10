@@ -11,7 +11,11 @@ is a small static site.
    ID as the branch name.
 2. From the main repo root:
    `git worktree add ../veronika-voyage-worktrees/<branch> -b <branch>`
-3. `cd` into the worktree and run `.ai/scripts/setup-ai-symlinks.sh`.
+3. `cd` into the worktree and run `bash .ai/scripts/setup-worktree.sh` (wires the AI
+   symlinks — which are also committed, so this is a repair/convenience step, not a
+   requirement — and runs `npm install` for the devDependencies: `serve`,
+   `markdownlint-cli2`). Or just `.ai/scripts/setup-ai-symlinks.sh` if you don't need
+   `npm install`.
 4. Do all edits, commits, and tests in the worktree.
 
 ## Personal files in worktrees (automatic)
@@ -28,10 +32,12 @@ up a newly copied `settings.local.json`.)
 ## Preview locally
 
 ```shell
-python3 -m http.server 8989
-open http://[::]:8989/           # index.html — the e-vite
-open http://[::]:8989/map/       # the voyage map
+npm run dev                      # serve -s . (http://localhost:3000/)
+# or, no npm install needed:
+npm start                        # python3 -m http.server 8989 (http://[::]:8989/)
 ```
+
+Either way: `/` is `index.html` (the e-vite), `/map/` is the voyage map.
 
 ## Finish (after the user confirms tested and good)
 

@@ -1,12 +1,18 @@
 # OS
 .DS_Store
 
+# npm (devDependencies only — serve, markdownlint-cli2; no build step for the site)
+node_modules/
+npm-debug.log*
+
 # AI Tool Symlinks: CLAUDE.md, AGENTS.md, GEMINI.md, .cursorrules, .claude/skills,
 # .claude/agents, .claude/settings.json, .augment/* are all COMMITTED symlinks into
-# .ai/ (source of truth). This repo has no package manager / postinstall step to
-# auto-generate them, so committing the symlinks themselves is what guarantees
-# Superpowers + repo hooks are active for every collaborator on every machine, from
-# a plain `git clone` alone — no setup script required. Do NOT gitignore them.
+# .ai/ (source of truth). Even though npm exists now, `npm install` is not
+# guaranteed to run before someone opens Claude Code in this repo, so committing
+# the symlinks themselves (rather than generating them via a postinstall hook) is
+# what guarantees Superpowers + repo hooks are active on a plain `git clone` alone.
+# Do NOT gitignore them. `npm install`'s postinstall re-runs the setup script as a
+# convenience self-heal, on top of — not instead of — the committed symlinks.
 # Only the personal, machine-specific files below are local-only:
 .claude/settings.local.json
 

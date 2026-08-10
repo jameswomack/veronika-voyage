@@ -29,6 +29,7 @@ booking link, RSVP contact info) — all with zero moving parts to operate or ma
 | **Hosting** | GitHub Pages, `main` branch / root, no CI build |
 | **Images** | Local files in `assets/`, or Google Drive hotlinks as fallback |
 | **RSVP** | `mailto:` / `tel:` links — no form, no backend |
+| **Dev tooling** | `npm` (`serve`, `markdownlint-cli2`) — dev-time only, `build` script is a deliberate no-op |
 
 ### Repo Structure
 

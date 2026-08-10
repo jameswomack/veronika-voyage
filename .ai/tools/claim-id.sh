@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 # claim-id — atomically reserves a SPEC.md ID on main before worktree creation.
 #
-# This repo has no Node/npm toolchain, so unlike mlb-projections' claim-id.ts
-# this is a plain bash port of the same idea: same ID format, same
-# reservation-table mechanic, same "commit directly to main" contract.
+# This is a plain bash port of mlb-projections' claim-id.ts (same ID format,
+# same reservation-table mechanic, same "commit directly to main" contract) so
+# it has no dependency on tsx/TypeScript — npm exists in this repo now, but
+# only for dev-time tooling (serve, markdownlint-cli2), and this stays
+# dependency-free on purpose so it works even before `npm install`.
 #
 # Usage:
 #   .ai/tools/claim-id.sh <prefix> "<task description>"
