@@ -11,12 +11,21 @@ assets/couple.jpg   ← photo slot: Veronika & Mark together    (you add this)
 assets/sydney.jpg   ← photo slot: Sydney seascape footer      (you add this)
 ```
 
-## Preview Locally (Python)
+## Preview Locally
 
 ```shell
-python3 -m http.server 8989
-open http://[::]:8989/
+npm install   # once, pulls in `serve` + `markdownlint-cli2` (dev tooling only)
+npm run dev   # http://localhost:3000/
 ```
+
+No Node/npm handy? No install needed:
+
+```shell
+npm start     # same as: python3 -m http.server 8989 → http://[::]:8989/
+```
+
+Either way this is local preview only — nothing here builds or transforms the site;
+GitHub Pages serves the committed HTML byte-for-byte.
 
 ## Deploy (GitHub Pages)
 

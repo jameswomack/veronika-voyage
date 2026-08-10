@@ -7,11 +7,16 @@
   "scripts": {
     "dev": "npx serve -s . -p 8989",
     "start": "python3 -m http.server 8989",
-    "build": "echo 'Nothing to build; this is a static site.'"
+    "build": "echo 'Nothing to build; this is a static site.'",
+    "postinstall": "bash .ai/scripts/setup-ai-symlinks.sh >/dev/null 2>&1 || true",
+    "setup:ai": "bash .ai/scripts/setup-ai-symlinks.sh",
+    "validate:ai": "bash .ai/scripts/validate-ai-symlinks.sh",
+    "lint:md": "markdownlint-cli2 \"**/*.md\" \"#node_modules\" \"#.claude\" \"#.augment\""
   },
   "author": "James Womack <james@womack.io>",
   "license": "MIT",
   "devDependencies": {
+    "markdownlint-cli2": "^0.23.2",
     "serve": "^14.2.0"
   },
   "dependencies": {},

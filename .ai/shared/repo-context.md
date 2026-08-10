@@ -7,14 +7,19 @@ Read this before touching anything in this repo.
 ## What this repo is
 
 A **static HTML/CSS/JS site, deployed via GitHub Pages, no build step, no
-package manager, no server**. It is a single-purpose personal project: a
-digital e-vite and trip site for one event (Veronika's 60th birthday
-cruise). There is no framework, no bundler, no `package.json`. Every page is
-a hand-authored `.html` file with inline or `<style>`/`<script>` blocks.
+server**. It is a single-purpose personal project: a digital e-vite and trip
+site for one event (Veronika's 60th birthday cruise). There is no framework,
+no bundler. Every page is a hand-authored `.html` file with inline or
+`<style>`/`<script>` blocks — `npm` exists only for tiny dev-time tooling
+(`serve` for local preview, `markdownlint-cli2` for linting `.md` files; see
+`package.json`), never to build or transform the site itself. GitHub Pages
+serves `index.html`/`email.html`/`map/index.html` byte-for-byte, exactly as
+committed — the `build` npm script is deliberately a no-op.
 
-Do not introduce a build system, npm dependency, or framework unless
+Do not introduce a bundler, framework, or a real build step unless
 explicitly asked — that would be a large, unwanted change of direction for
-a project this size.
+a project this size. Adding a devDependency for a specific dev-tooling need
+(another linter, a screenshot tool, etc.) is fine.
 
 ## Repo layout
 
@@ -42,6 +47,19 @@ Both `index.html` and `map/index.html` are served live at
 `.../veronika-voyage/map/` respectively — see the "Deploy" section of
 `README.md`. `email.html` is the only file in the repo that is deliberately
 **not** part of the deployed site.
+
+## npm scripts (dev tooling only, not a build)
+
+| Script | What it does |
+|--------|--------------|
+| `npm run dev` | Local preview via `serve` — `http://localhost:3000/` |
+| `npm start` | Local preview via `python3 -m http.server 8989` (no `npm install` needed) |
+| `npm run build` | No-op — this repo ships raw HTML, kept only so tooling that expects a `build` script doesn't break |
+| `npm run lint:md` | `markdownlint-cli2` over all `.md` files |
+| `npm run setup:ai` | Re-wires `.ai/`-sourced symlinks (repair only — they're committed, see [[.ai/README.md]]) |
+| `npm run validate:ai` | Checks the symlinks + `.claude/settings.json` are correct |
+
+`postinstall` also re-runs `setup:ai` automatically after `npm install`, as a belt-and-suspenders self-heal.
 
 ## GitHub Pages deployment model
 

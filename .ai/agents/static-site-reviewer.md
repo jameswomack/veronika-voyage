@@ -28,12 +28,13 @@ You are reviewing changes to a small, hand-authored static site (`index.html`,
    wide) and that the three-tier photo-loading fallback (local → Drive hotlink → designed
    fallback) still degrades gracefully if an image 404s.
 5. **Don't scope-creep into a framework.** Do not suggest introducing a bundler, CSS
-   framework, or JS framework — this repo is intentionally zero-tooling; that tradeoff is
-   deliberate, not an oversight to fix.
+   framework, or JS framework. `npm` exists in this repo, but only for dev-time tooling
+   (`serve`, `markdownlint-cli2`) — that boundary is deliberate, not an oversight to fix.
 
 ## How to verify
 
-Serve the repo locally (`python3 -m http.server 8989` from repo root) and actually load
-the changed page in a browser — checking a diff alone will miss layout regressions. Test
-both `index.html` at `/` and, if touched, `map/index.html` at `/map/`. If you cannot
-render the page yourself, say so explicitly rather than asserting the change looks right.
+Serve the repo locally (`npm run dev`, or `npm start` for the no-install
+`python3 -m http.server 8989` fallback) and actually load the changed page in a browser
+— checking a diff alone will miss layout regressions. Test both `index.html` at `/` and,
+if touched, `map/index.html` at `/map/`. If you cannot render the page yourself, say so
+explicitly rather than asserting the change looks right.

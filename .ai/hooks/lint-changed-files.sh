@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # Stop hook: best-effort lint of changed files in the veronika-voyage project.
-# Markdown via markdownlint-cli2 if present; HTML via tidy if present. Never
-# blocks — this repo has no package.json, so both tools are optional.
+# Markdown via the repo's pinned node_modules/.bin/markdownlint-cli2 (falls
+# back to a global install if node_modules is missing, e.g. before the first
+# `npm install`); HTML via tidy if present. Never blocks.
 
 CWD=$(pwd)
 [[ "$CWD" != *veronika-voyage* ]] && exit 0
@@ -17,10 +18,10 @@ HTML_FILES=$(echo "$CHANGED" | grep -E '\.html$' || true)
 
 ISSUES=""
 
-if [[ -n "$MD_FILES" ]] && command -v markdownlint-cli2 >/dev/null 2>&1; then
-  MD_OUT=$(echo "$MD_FILES" | xargs markdownlint-cli2 2>&1) || ISSUES+="$MD_OUT"$'\n'
-elif [[ -n "$MD_FILES" ]] && [[ -x "$REPO_ROOT/node_modules/.bin/markdownlint-cli2" ]]; then
+if [[ -n "$MD_FILES" ]] && [[ -x "$REPO_ROOT/node_modules/.bin/markdownlint-cli2" ]]; then
   MD_OUT=$(echo "$MD_FILES" | xargs "$REPO_ROOT/node_modules/.bin/markdownlint-cli2" 2>&1) || ISSUES+="$MD_OUT"$'\n'
+elif [[ -n "$MD_FILES" ]] && command -v markdownlint-cli2 >/dev/null 2>&1; then
+  MD_OUT=$(echo "$MD_FILES" | xargs markdownlint-cli2 2>&1) || ISSUES+="$MD_OUT"$'\n'
 fi
 
 if [[ -n "$HTML_FILES" ]] && command -v tidy >/dev/null 2>&1; then

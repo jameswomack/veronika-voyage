@@ -1,0 +1,6 @@
+{
+  "extends": "../../.markdownlint.jsonc",
+  "MD041": {
+    "enabled": false
+  }
+}

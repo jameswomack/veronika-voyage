@@ -7,7 +7,8 @@
 
 ## Project Context
 
-Plain HTML/CSS/JS, no framework, no bundler, no `package.json`. `index.html`
+Plain HTML/CSS/JS, no framework, no bundler. `npm` exists only for dev-time
+tooling (`serve`, `markdownlint-cli2`) — never to build the site. `index.html`
 is the e-vite (envelope → invitation), `map/index.html` is the linked voyage
 map, and `email.html` is a self-contained fragment meant to be hand-pasted
 into an email client's HTML compose view — it is not part of the deployed

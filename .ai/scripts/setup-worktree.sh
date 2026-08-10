@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 # .ai/scripts/setup-worktree.sh
 #
-# Bootstraps a fresh git worktree for this repo. There is no build step and
-# no npm/Prisma here (static HTML/CSS/JS), so this is much thinner than the
-# equivalent script in framework projects — it exists mainly to wire the AI
-# agent symlinks and preview the site immediately.
+# Bootstraps a fresh git worktree for this repo. There is still no build step
+# (static HTML/CSS/JS, deployed byte-for-byte to GitHub Pages) — npm here is
+# only for tiny dev-time tooling (serve, markdownlint-cli2) — so this stays
+# much thinner than the equivalent script in framework projects. It wires the
+# AI agent symlinks, installs devDependencies, and gets the site previewable.
 #
 # Usage (from the MAIN repo root, after git worktree add):
 #   bash .ai/scripts/setup-worktree.sh <worktree-path>
@@ -43,9 +44,17 @@ echo -e "${CYAN}Main repo: ${MAIN}${NC}"
 step "Wiring AI agent symlinks"
 (cd "$WORKTREE" && bash .ai/scripts/setup-ai-symlinks.sh 2>&1 | grep -E "✓|⚠" | sed 's/^/  /')
 
+step "Installing devDependencies (serve, markdownlint-cli2)"
+if [[ -f "$WORKTREE/package.json" ]] && command -v npm >/dev/null 2>&1; then
+  (cd "$WORKTREE" && npm install --prefer-offline 2>&1 | tail -5 | sed 's/^/  /')
+  ok "node_modules installed"
+else
+  echo "  ⚠  npm not found or no package.json — skipping (falls back to global tools / python3)"
+fi
+
 echo -e "\n${GREEN}Worktree ready.${NC}"
 echo ""
-echo "  Preview locally:  cd $WORKTREE && python3 -m http.server 8989"
-echo "  Open:              http://[::]:8989/            (index.html — the e-vite)"
-echo "                      http://[::]:8989/map/        (voyage map)"
+echo "  Preview locally:  cd $WORKTREE && npm run dev      (or: npm start / python3 -m http.server 8989)"
+echo "  Open:              http://localhost:3000/           (index.html — the e-vite, via \`serve\`)"
+echo "                      http://localhost:3000/map/       (voyage map)"
 echo ""

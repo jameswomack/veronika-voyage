@@ -16,5 +16,8 @@
   "MD036": {
     "enabled": true,
     "severity": "error"
+  },
+  "MD060": {
+    "enabled": false
   }
 }
