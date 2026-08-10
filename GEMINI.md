@@ -1,0 +1,1 @@
+.ai/tool-configs/gemini-context.md

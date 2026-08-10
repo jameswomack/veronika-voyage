@@ -9,6 +9,25 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Fixed — Superpowers wasn't actually guaranteed on a fresh clone (2026-08-09)
+
+The initial `.ai/` setup gitignored `CLAUDE.md`, `.claude/settings.json`, and the other
+vendor entry points, following the mlb-projections/womack-audio pattern exactly — but
+those repos regenerate them via an npm-postinstall (husky) hook, which this repo has no
+equivalent of (no `package.json`). The practical effect: a brand-new collaborator cloning
+this repo got no `CLAUDE.md` and no `.claude/settings.json` at all until they thought to
+manually run `.ai/scripts/setup-ai-symlinks.sh` — so Superpowers activation was never
+actually guaranteed, contrary to the goal.
+
+Fix: `CLAUDE.md`, `AGENTS.md`, `GEMINI.md`, `.cursorrules`, `.claude/skills`,
+`.claude/agents`, `.claude/settings.json`, and `.augment/*` are now **committed symlinks**
+into `.ai/` rather than gitignored/generated files. `.claude/settings.json` in particular
+now symlinks directly to `.ai/tool-configs/claude/settings.template.json` instead of
+being a copy — no drift possible, no generation step needed. A plain `git clone` is now
+sufficient; `.ai/scripts/setup-ai-symlinks.sh` is only needed to repair a symlink
+clobbered by a tool that doesn't preserve them. Only `.claude/settings.local.json`
+(personal permission allow-list) remains gitignored.
+
 ### Added — `.ai/` agent-context system (2026-08-09)
 
 Set up the `.ai/` standard used across other repos (mlb-projections, womack-audio) so

@@ -1,13 +1,14 @@
 # OS
 .DS_Store
 
-# AI Tool Symlinks / generated vendor files (source of truth lives in .ai/)
-CLAUDE.md
-AGENTS.md
-GEMINI.md
-.cursorrules
-.claude/
-.augment/
+# AI Tool Symlinks: CLAUDE.md, AGENTS.md, GEMINI.md, .cursorrules, .claude/skills,
+# .claude/agents, .claude/settings.json, .augment/* are all COMMITTED symlinks into
+# .ai/ (source of truth). This repo has no package manager / postinstall step to
+# auto-generate them, so committing the symlinks themselves is what guarantees
+# Superpowers + repo hooks are active for every collaborator on every machine, from
+# a plain `git clone` alone — no setup script required. Do NOT gitignore them.
+# Only the personal, machine-specific files below are local-only:
+.claude/settings.local.json
 
 # Local-only personal files (copied into worktrees from main by setup-ai-symlinks.sh)
 .ai/session-history/

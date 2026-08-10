@@ -1,0 +1,1 @@
+../../.ai/tool-configs/augment-rules.md

@@ -12,14 +12,20 @@ memory to update). `enforce-worktree` stays global-only, same as every other rep
 | `lint-changed-files.sh` | `Stop` | Best-effort markdownlint + `tidy` (HTML) on changed files, if installed | 0 |
 | `enforce-worktree.sh` | `PreToolUse(Edit\|Write\|NotebookEdit)` — **global only** | Blocks edits on `main`/`master` | 0 / 2 |
 
-All four repo-native hooks are wired in `.ai/tool-configs/claude/settings.template.json`,
-which `.ai/scripts/setup-ai-symlinks.sh` copies to `.claude/settings.json` (gitignored,
-generated — never hand-edit `.claude/settings.json` directly).
+All four repo-native hooks are wired in `.ai/tool-configs/claude/settings.template.json`.
+`.claude/settings.json` is a **committed symlink** to that file (not a gitignored copy) —
+this repo has no package manager / postinstall step to regenerate it, so committing the
+symlink is what guarantees Superpowers and these hooks are active for every collaborator,
+on every machine, straight from `git clone`. Never hand-edit `.claude/settings.json`;
+edit `.ai/tool-configs/claude/settings.template.json` instead — the symlink picks it up
+automatically, no regeneration step needed.
 
 ## Self-healing after checkout/merge/rebase
 
-`.ai/scripts/setup-ai-symlinks.sh` runs `git config core.hooksPath .githooks`, so
+The committed symlinks (`CLAUDE.md`, `.claude/settings.json`, etc.) travel with `git
+clone`/`checkout` on their own — no script needed for the common case. `.ai/scripts/
+setup-ai-symlinks.sh` still exists to (re)create them if one gets clobbered by a tool
+that doesn't preserve symlinks, and it runs `git config core.hooksPath .githooks` so
 `.githooks/post-checkout`, `post-merge`, and `post-rewrite` (all one-liners calling
-`.ai/scripts/heal-ai-workspace.sh`) automatically regenerate the gitignored vendor files
-(`.claude/settings.json`, `CLAUDE.md`, etc.) after a branch switch, pull, or rebase — no
-npm/husky needed, since this repo has no package manager.
+`.ai/scripts/heal-ai-workspace.sh`) repair them automatically after a branch switch,
+pull, or rebase — no npm/husky needed, since this repo has no package manager.
