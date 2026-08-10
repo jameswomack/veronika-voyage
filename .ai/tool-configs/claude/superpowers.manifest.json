@@ -1,0 +1,8 @@
+{
+  "plugin": "superpowers@claude-plugins-official",
+  "marketplace": "claude-plugins-official",
+  "version": "6.2.0",
+  "scope": "project",
+  "enableVia": ".claude/settings.json -> enabledPlugins",
+  "installCommand": "claude plugin install superpowers@claude-plugins-official"
+}

@@ -1,0 +1,20 @@
+{
+  "MD013": {
+    "enabled": true,
+    "line_length": 180,
+    "heading_line_length": 80,
+    "severity": "warning",
+    "stern": false
+  },
+  "MD024": {
+    "enabled": true,
+    "siblings_only": true
+  },
+  "MD029": {
+    "enabled": false
+  },
+  "MD036": {
+    "enabled": true,
+    "severity": "error"
+  }
+}

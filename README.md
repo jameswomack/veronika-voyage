@@ -92,3 +92,10 @@ to bust a stale preview after changes.
 
 - mailto: <womackmarkw@gmail.com> (subject pre-filled "RSVP — Veronika's 60th Birthday Cruise")
 - tel: +61 429 111 363
+
+## Working with an AI coding assistant on this repo
+
+See `.ai/README.md`. `.ai/SPEC.md` and `.ai/CHANGELOG.md` track what's built and what
+changed; `.ai/shared/repo-context.md` (symlinked as `CLAUDE.md`/`AGENTS.md`) is the
+canonical agent context. Run `.ai/scripts/setup-ai-symlinks.sh` after cloning or pulling
+to wire up `.claude/`, `.cursorrules`, `.augment/`, and `GEMINI.md`.

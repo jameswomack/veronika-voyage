@@ -1,0 +1,13 @@
+# OS
+.DS_Store
+
+# AI Tool Symlinks / generated vendor files (source of truth lives in .ai/)
+CLAUDE.md
+AGENTS.md
+GEMINI.md
+.cursorrules
+.claude/
+.augment/
+
+# Local-only personal files (copied into worktrees from main by setup-ai-symlinks.sh)
+.ai/session-history/
