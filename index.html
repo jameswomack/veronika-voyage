@@ -248,7 +248,7 @@ h1{
 
 /* couple photo */
 .figure{ margin:0; }
-.figure img{ width:100%; display:block; max-height:440px; object-fit:cover; object-position:bottom; }
+.figure img{ width:100%; display:block; max-height:440px; object-fit:cover; object-position:center; }
 .figure figcaption{
   text-align:center; padding:12px 20px 0;
   font-family:'Cormorant Garamond',serif; font-style:italic; font-size:14.5px; color:var(--mist);
@@ -427,9 +427,9 @@ footer{ text-align:center; padding:26px 20px 0; font-size:9.5px; letter-spacing:
       </div>
     </div>
 
-    <figure class="figure" id="coupleFig">
+    <figure class="figure" id="">
       <img class="slot" alt="Veronika and Mark" referrerpolicy="no-referrer"
-           data-srcs="assets/couple.jpg|https://drive.google.com/thumbnail?id=1kh_7lJ3aqIk7ZM5gcPfvcEWDgJftgpDu&sz=w1600"
+           data-srcs="assets/couple.png|https://drive.google.com/thumbnail?id=1kh_7lJ3aqIk7ZM5gcPfvcEWDgJftgpDu&sz=w1600"
            data-fb="couple">
       <figcaption>Veronika &amp; Mark</figcaption>
     </figure>
@@ -535,8 +535,10 @@ footer{ text-align:center; padding:26px 20px 0; font-size:9.5px; letter-spacing:
   // ---- Portrait gallery: local assets first, then Drive; only loadable photos survive ----
   var CANDIDATES = [
     'assets/veronika.jpg','assets/veronika2.jpg','assets/veronika3.jpg',
-    'assets/veronika4.jpg','assets/veronika5.jpg',
-    'https://drive.google.com/thumbnail?id=1_I9jsUDpQ0xDtp71ulKcJ1-noAHTZ7nD&sz=w1600',
+    'assets/veronika4.jpg','assets/veronika5.jpg','assets/veronika6.png',
+    'assets/veronika7.jpg',
+    'https://lh3.googleusercontent.com/d/1GrR66yRxUKkQfoyk2xHFjUrC04dcKTJF=w1600',
+    'https://drive.google.com/thumbnail?id=1fUTtq6PQXKGhh9qQ6BJkOvte_HKP9_yR&sz=w1600',
     'https://drive.google.com/thumbnail?id=1Vq_uKfTxGnF3-pePNLuv3t0mvjIFhkuw&sz=w1600',
     'https://drive.google.com/thumbnail?id=1NzHIPYbCuPL0xQ1HkABDgXGDWGMEJnR3&sz=w1600',
     'https://drive.google.com/thumbnail?id=1Tl8SErOC5OJq1cGV7ZjyGyl8pTO8fjrM&sz=w1600',
